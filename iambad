@@ -1,0 +1,10 @@
+// print out what was read in
+
+    for (size_t i=0; i<array.size(); ++i)
+    {
+        for (size_t j=0; j<array[i].size(); ++j)
+        {
+            cout << array[i][j] << ","; // (separate fields by ,)
+        }
+        cout << "\n";
+    }
