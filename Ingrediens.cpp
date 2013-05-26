@@ -21,3 +21,55 @@ double Ingrediens::getID()
 {
 	return id;
 }
+std::string Ingrediens::getName()
+{
+	return name;
+}
+double Ingrediens::getGrammes()
+{
+	return grammes;
+}
+double Ingrediens::getWater()
+{
+	return water;
+}
+double Ingrediens::getKjoule()
+{
+	return kjoule;
+}
+double Ingrediens::getFat()
+{
+	return fat;
+}
+double Ingrediens::getCholesterol()
+{
+	return cholesterol;
+}
+double Ingrediens::getCarbohydrate()
+{
+	return carbohydrate;
+}
+double Ingrediens::getFiber()
+{
+	return fiber;
+}
+double Ingrediens::getProteins()
+{
+	return proteins;
+}
+double Ingrediens::getVitA()
+{
+	return vitA;
+}
+double Ingrediens::getVitD()
+{
+	return vitD;
+}
+double Ingrediens::getVitE()
+{
+	return vitE;
+}
+double Ingrediens::getVitC()
+{
+	return vitC;
+}
