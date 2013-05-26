@@ -138,7 +138,7 @@ void searchCategory()
 		}		
 	}
 
-void parseIngredient()
+vector<string> getIngredient()
 	{
 		if(in == nullptr)
 		{
@@ -163,55 +163,59 @@ void parseIngredient()
 					}
 				}
 			}
+
+			return ingresultfound;
 			
+			
+			in.close();
+		}
+	}
+
+void parseIngredient(vector<string> _vectortobeparsed)
+	{
+		vector<string> vectortobeparsed = _vectortobeparsed;
 			/*
 			Converts the values in the vector as needed and assigns them to a variable. 
 			*/
-			double id = atof(ingresultfound[0].c_str());
-			string navn = ingresultfound[1];
-			double vann = atof(ingresultfound[2].c_str());
-			double kilojoule = atof(ingresultfound[3].c_str());
-			double fett = atof(ingresultfound[4].c_str());
-			double kolesterol = atof(ingresultfound[5].c_str());
-			double karbohydrat = atof(ingresultfound[6].c_str());
-			double kostfiber= atof(ingresultfound[7].c_str());
-			double protein = atof(ingresultfound[8].c_str());
-			double vitaminA = atof(ingresultfound[9].c_str());
-			doublevitaminD = atof(ingresultfound[10].c_str());
-			double vitaminE = atof(ingresultfound[11].c_str());
-			double vitaminC = atof(ingresultfound[12].c_str());
+			double id = atof(vectortobeparsed[0].c_str());
+			string navn = vectortobeparsed[1];
+			double vann = atof(vectortobeparsed[2].c_str());
+			double kilojoule = atof(vectortobeparsed[3].c_str());
+			double fett = atof(vectortobeparsed[4].c_str());
+			double kolesterol = atof(vectortobeparsed[5].c_str());
+			double karbohydrat = atof(vectortobeparsed[6].c_str());
+			double kostfiber= atof(vectortobeparsed[7].c_str());
+			double protein = atof(vectortobeparsed[8].c_str());
+			double vitaminA = atof(vectortobeparsed[9].c_str());
+			double vitaminD = atof(vectortobeparsed[10].c_str());
+			double vitaminE = atof(vectortobeparsed[11].c_str());
+			double vitaminC = atof(vectortobeparsed[12].c_str());
 			
-			double gram = 1.0;
+			double gram = 2.0; //placeholder for debugging the Ingrediens constructor
+ 
+			Ingrediens ing(id,navn,vann,kilojoule,fett,kolesterol,karbohydrat,kostfiber,protein,vitaminA,vitaminD,vitaminE,vitaminC);
+			
 
-			Ingrediens ing(); 
-			
-			//Create a new Ingrediens object using the parsed values:
-			Ingrediens ing(id,navn,gram,vann,kilojoule,fett,kolesterol,karbohydrat,kostfiber,protein,vitaminA,vitaminD,vitaminE,vitaminC);
-			
-			
-			//TODO: make a push_back to a vector for storing multiple ingredients in a recipe.
+			//TODO: make push_back to a vector or an array for storing multiple ingredients in a recipe along with their amounts.
 			pair<Ingrediens,double> par;
 			vector<pair<Ingrediens,double>> recipe;
 
 			par = std::make_pair(ing,gram);
 			
-			//debugging to see if the variables are getting passed correctly.
-			cout << par.first.getCarbohydrate() << "  " << par.second << endl;  
-											   
+			//debugging to see if we can access the variables in the pair
+			cout << par.first.getCarbohydrate() << "  " << par.second << endl; 
+
 			//more debugging to see if we can do ~math~
 			cout << par.first.getCarbohydrate() * par.second << endl;  
-			
+
 			//put the pair into a vector
 			recipe.push_back(par);
-			
+
 			//see if we can print the contents of the pair inside the vector
 			cout << recipe[0].first.getCarbohydrate() << " " << recipe[0].second <<endl;
 
 			//perform ~math~ on the contents inside etc etc...
 			cout << recipe[0].first.getCarbohydrate() * recipe[0].second << endl;
-			
-			in.close();
-		}
 	}
 
 int main()
@@ -243,7 +247,7 @@ int main()
     //}
 	
 	//searchCategory();
-	parseIngredient();
+	parseIngredient(getIngredient());
 
 	system("PAUSE");
 	}
