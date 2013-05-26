@@ -89,7 +89,10 @@ void selectCat()
 				}
 				break;
 			default:
-			{}
+			{
+				cout << "Select food category to list (1 - 13)" << endl;
+				cin >> catnumber;
+			}
 			break;
 		}
 	}
@@ -144,8 +147,7 @@ void parseIngredient()
 		{
 			vecsearch = "01.001";
 			vector<string> ingresultfound;
-			double id, vann, kilojoule,fett,kolesterol,karbohydrat,kostfiber,protein,vitaminA,vitaminD,vitaminE,vitaminC;
-			string ingword,ingsearchline, navn;
+			string ingword,ingsearchline;
 			ingresultfound.clear();
 			while(getline(in, ingsearchline))
 			{
@@ -161,34 +163,34 @@ void parseIngredient()
 				}
 			}
 			
-			navn = ingresultfound[1];
-
 			/*
 			Konverterer alle nummerverdiene i vektoren og tilordner de hver sin variabel: 
 			*/
-			id = atof(ingresultfound[0].c_str());
-			vann = atof(ingresultfound[2].c_str());
-			kilojoule = atof(ingresultfound[3].c_str());
-			fett = atof(ingresultfound[4].c_str());
-			kolesterol = atof(ingresultfound[5].c_str());
-			karbohydrat = atof(ingresultfound[6].c_str());
-			kostfiber= atof(ingresultfound[7].c_str());
-			protein = atof(ingresultfound[8].c_str());
-			vitaminA = atof(ingresultfound[9].c_str());
-			vitaminD = atof(ingresultfound[10].c_str());
-			vitaminE = atof(ingresultfound[11].c_str());
-			vitaminC = atof(ingresultfound[12].c_str());
+			double id = atof(ingresultfound[0].c_str());
+			string navn = ingresultfound[1];
+			double vann = atof(ingresultfound[2].c_str());
+			double kilojoule = atof(ingresultfound[3].c_str());
+			double fett = atof(ingresultfound[4].c_str());
+			double kolesterol = atof(ingresultfound[5].c_str());
+			double karbohydrat = atof(ingresultfound[6].c_str());
+			double kostfiber= atof(ingresultfound[7].c_str());
+			double protein = atof(ingresultfound[8].c_str());
+			double vitaminA = atof(ingresultfound[9].c_str());
+			doublevitaminD = atof(ingresultfound[10].c_str());
+			double vitaminE = atof(ingresultfound[11].c_str());
+			double vitaminC = atof(ingresultfound[12].c_str());
 			
 			double gram = 1.0;
 
 			Ingrediens ing(); 
-			//ing = new Ingrediens(id,navn,gram,vann,kilojoule,fett,kolesterol,karbohydrat,kostfiber,protein,vitaminA,vitaminD,vitaminE,vitaminC);
-			ing = new Ingrediens((double)id,(string)navn,(double)gram,(double)vann,(double)kilojoule,(double)fett,(double)kolesterol,(double)karbohydrat,(double)kostfiber,(double)protein,(double)vitaminA,(double)vitaminD,(double)vitaminE,(double)vitaminC);
-			//cout << vann << " " << kilojoule << " " << fett;
-			//for(size_t i=0; i<ingresultfound.size(); ++i)
-			//{
-			//	cout << ingresultfound[i];
-			//}
+			
+			//Create a new Ingrediens object using the parsed values:
+			Ingrediens ing(id,navn,gram,vann,kilojoule,fett,kolesterol,karbohydrat,kostfiber,protein,vitaminA,vitaminD,vitaminE,vitaminC);
+			
+			
+			//TODO: make a push_back to a vector for storing multiple ingredients in a recipe.
+			
+			
 			in.close();
 		}
 	}
