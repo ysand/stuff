@@ -165,7 +165,7 @@ void parseIngredient()
 			}
 			
 			/*
-			Konverterer alle nummerverdiene i vektoren og tilordner de hver sin variabel: 
+			Converts the values in the vector as needed and assigns them to a variable. 
 			*/
 			double id = atof(ingresultfound[0].c_str());
 			string navn = ingresultfound[1];
@@ -201,6 +201,14 @@ void parseIngredient()
 			//more debugging to see if we can do ~math~
 			cout << par.first.getCarbohydrate() * par.second << endl;  
 			
+			//put the pair into a vector
+			recipe.push_back(par);
+			
+			//see if we can print the contents of the pair inside the vector
+			cout << recipe[0].first.getCarbohydrate() << " " << recipe[0].second <<endl;
+
+			//perform ~math~ on the contents inside etc etc...
+			cout << recipe[0].first.getCarbohydrate() * recipe[0].second << endl;
 			
 			in.close();
 		}
