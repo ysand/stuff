@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <utility>
 #include "ingrediens.h"
 using namespace std;
     
@@ -189,6 +190,16 @@ void parseIngredient()
 			
 			
 			//TODO: make a push_back to a vector for storing multiple ingredients in a recipe.
+			pair<Ingrediens,double> par;
+			vector<pair<Ingrediens,double>> recipe;
+
+			par = std::make_pair(ing,gram);
+			
+			//debugging to see if the variables are getting passed correctly.
+			cout << par.first.getCarbohydrate() << "  " << par.second << endl;  
+											   
+			//more debugging to see if we can do ~math~
+			cout << par.first.getCarbohydrate() * par.second << endl;  
 			
 			
 			in.close();
