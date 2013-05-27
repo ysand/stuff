@@ -7,8 +7,10 @@
 #include <utility>
 #include "ingrediens.h"
 using namespace std;
-    
-	ifstream in("Matvaretabellen2012.csv");
+	
+	
+	string file = "Matvaretabellen2012.csv";
+	ifstream in;
 
 	string line, field;
 	
@@ -16,6 +18,9 @@ using namespace std;
 	vector< vector<string> > array;  // the 2D array
     vector<string> v; // array of values for one line only
 	string vecsearch = " ";
+	int menuoption, searchoption;
+	string searchID;
+	double grammes;
 
 void selectCat()
 	{
@@ -90,16 +95,17 @@ void selectCat()
 				}
 				break;
 			default:
-			{
+				{
 				cout << "Select food category to list (1 - 13)" << endl;
 				cin >> catnumber;
-			}
+				}
 			break;
 		}
 	}
 
 void searchCategory()
-	{		
+	{
+		in.open(file);
 		if (in == nullptr)
 		{
 			cout << "Could not open file!" << endl;			
@@ -138,18 +144,19 @@ void searchCategory()
 		}		
 	}
 
-vector<string> getIngredient()
+vector<string> getIngredient(string _vecsearch)
 	{
+		in.open(file);
 		if(in == nullptr)
 		{
 			cout << "Could not open file!" << endl;
 		}
 		else
 		{
-			vecsearch = "01.001";
+			vecsearch = _vecsearch;
 			vector<string> ingresultfound;
-			string ingword,ingsearchline;
 			ingresultfound.clear();
+			string ingword,ingsearchline;
 			while(getline(in, ingsearchline))
 			{
 				ingStart = ingsearchline.find(vecsearch);
@@ -164,14 +171,12 @@ vector<string> getIngredient()
 				}
 			}
 
-			return ingresultfound;
-			
-			
+			return ingresultfound;			
 			in.close();
 		}
 	}
 
-void parseIngredient(vector<string> _vectortobeparsed)
+pair<Ingrediens,double> parseIngredient(vector<string> _vectortobeparsed, double _gram)
 	{
 		vector<string> vectortobeparsed = _vectortobeparsed;
 			/*
@@ -191,37 +196,135 @@ void parseIngredient(vector<string> _vectortobeparsed)
 			double vitaminE = atof(vectortobeparsed[11].c_str());
 			double vitaminC = atof(vectortobeparsed[12].c_str());
 			
-			double gram = 2.0; //placeholder for debugging the Ingrediens constructor
- 
+			//The parsed and cast values are added to a Ingrediens object
 			Ingrediens ing(id,navn,vann,kilojoule,fett,kolesterol,karbohydrat,kostfiber,protein,vitaminA,vitaminD,vitaminE,vitaminC);
 			
-
 			//TODO: make push_back to a vector or an array for storing multiple ingredients in a recipe along with their amounts.
 			pair<Ingrediens,double> par;
-			vector<pair<Ingrediens,double>> recipe;
 
-			par = std::make_pair(ing,gram);
-			
-			//debugging to see if we can access the variables in the pair
-			cout << par.first.getCarbohydrate() << "  " << par.second << endl; 
+			par = make_pair(ing,_gram);
+			return par;
+	}
 
-			//more debugging to see if we can do ~math~
-			cout << par.first.getCarbohydrate() * par.second << endl;  
+void addToRecipe(pair<Ingrediens,double> _par)
+	{
+		//pair<Ingrediens,double> ingpair  =_par;
 
-			//put the pair into a vector
-			recipe.push_back(par);
+		vector<pair<Ingrediens,double>> recipe;
+
+		//put the pair into a vector
+			recipe.push_back(_par);
 
 			//see if we can print the contents of the pair inside the vector
 			cout << recipe[0].first.getCarbohydrate() << " " << recipe[0].second <<endl;
 
 			//perform ~math~ on the contents inside etc etc...
 			cout << recipe[0].first.getCarbohydrate() * recipe[0].second << endl;
+
+	}
+
+void cont()
+	{
+		char yesno;
+		cout << "Fortsette? (y/n)" << endl;
+		cin >> yesno;
+		if(yesno == 'y' || yesno == 'Y')
+			{
+				//Nothing is done if y is pressed. This will keep any while loop inside the menu switch case running.
+			}
+		if(yesno == 'n' || yesno == 'N')
+			{
+				menuoption = 0;	//If n is pressed, the menu option will be set to 0 and restart the outer if loop in ShowMenu().
+			}
+
+		if(yesno != 'y' && yesno != 'Y' && yesno != 'n' && yesno != 'N')
+			{
+				cout << "Ugyldig kommando." << endl;
+			}
+	}
+
+void ShowMenu()
+	{
+		if(menuoption == 0)
+		{
+			system("cls"); //clears the screen
+			cout << "Select a menu option: " << endl;
+			cin >> menuoption;
+		switch(menuoption)
+			{
+				case 1:
+					while(menuoption != 0)
+					{
+						cout << "Press 1 to list a category, press 2 to display an ingredient by ID: " << endl;
+						cin >> searchoption;
+						switch(searchoption)
+						{
+						case 1:
+							{
+								searchCategory();
+								cont();
+							}
+						break;
+						case 2:
+							{
+								cout << "Type the ID number of the ingredient: " << endl;
+								cin >> searchID;
+								vector<string> idres = getIngredient(searchID);
+								for(size_t i=0; i<idres.size(); ++i)
+								{
+									cout << idres[i] << " ";
+								}
+								cout << endl;
+							}
+						break;
+						default:
+							{
+							}
+						break;
+						}
+					}
+				break;
+				case 2:
+					while(menuoption != 0)
+					{
+					cout << "Create recipe: " << endl << endl;;
+					cout << "Select ingredient ID: " << endl;
+					cin >> searchID;
+					cout << "Specify amount of grammes: " << endl;
+					cin >> grammes;
+					addToRecipe(parseIngredient(getIngredient(searchID),grammes));
+					}
+			break;
+				case 3:
+					while(menuoption != 0)
+					{
+						
+					}
+			break;
+				case 4:
+					while(menuoption != 0)
+					{
+						
+					}
+			break;
+				case 5:
+					{
+						cout << endl << endl;//The exit case does nothing, as this is handled in main().
+					}
+			break;
+				default:
+					{
+					cout << "INVALID MENU OPTION!"<< endl << endl; //Gives an error message and sends the loop back to start.
+					menuoption = 0;
+					}
+			break;
+			}		
+	
+		}
 	}
 
 int main()
 	{
-		
-
 	//while ( getline(in,line) )    // get next line in file
     //{
     //    v.clear();
@@ -231,12 +334,10 @@ int main()
     //    {
     //        v.push_back(field);  // add each field to the 1D array
     //    }
-
     //    array.push_back(v);  // add the 1D array to the 2D array
     //}
 
 	// print out what was read in
-
     //for (size_t i=0; i<array.size(); ++i)
     //{
     //    for (size_t j=0; j<array[i].size(); ++j)
@@ -247,7 +348,11 @@ int main()
     //}
 	
 	//searchCategory();
-	parseIngredient(getIngredient());
+	//parseIngredient(getIngredient());
 
+	while(menuoption !=5)
+		{
+		ShowMenu();
+		}
 	system("PAUSE");
 	}
