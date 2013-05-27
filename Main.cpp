@@ -9,8 +9,7 @@
 using namespace std;
 	
 	
-	string file = "Matvaretabellen2012.csv";
-	ifstream in;
+	
 
 	string line, field;
 	
@@ -103,9 +102,8 @@ void selectCat()
 		}
 	}
 
-void searchCategory()
+void searchCategory(ifstream &in)
 	{
-		in.open(file);
 		if (in == nullptr)
 		{
 			cout << "Could not open file!" << endl;			
@@ -144,25 +142,22 @@ void searchCategory()
 		}		
 	}
 
-vector<string> getIngredient(string _vecsearch)
+vector<string> getIngredient(ifstream &in,string _vecsearch)
 	{
-		in.open(file);
 		if(in == nullptr)
 		{
 			cout << "Could not open file!" << endl;
 		}
 		else
 		{
-			vecsearch = _vecsearch;
 			vector<string> ingresultfound;
-			ingresultfound.clear();
 			string ingword,ingsearchline;
 			while(getline(in, ingsearchline))
 			{
-				ingStart = ingsearchline.find(vecsearch);
+				ingStart = ingsearchline.find(_vecsearch);
 				stringstream ss(ingsearchline);
 
-				if (ingsearchline.find(vecsearch) == 0)
+				if (ingsearchline.find(_vecsearch) == 0)
 				{
 					while(getline(ss,ingword,';'))
 					{
@@ -171,8 +166,11 @@ vector<string> getIngredient(string _vecsearch)
 				}
 			}
 
-			return ingresultfound;			
-			in.close();
+			return ingresultfound;
+			
+			in.clear(); //clear eofbit
+			in.seekg(0); //reset read pos to beginning
+			//in.close();
 		}
 	}
 
@@ -226,7 +224,7 @@ void addToRecipe(pair<Ingrediens,double> _par)
 void cont()
 	{
 		char yesno;
-		cout << "Fortsette? (y/n)" << endl;
+		cout << "Continue? (y/n)" << endl;
 		cin >> yesno;
 		if(yesno == 'y' || yesno == 'Y')
 			{
@@ -239,11 +237,16 @@ void cont()
 
 		if(yesno != 'y' && yesno != 'Y' && yesno != 'n' && yesno != 'N')
 			{
-				cout << "Ugyldig kommando." << endl;
+				cout << "Invalid command." << endl;
 			}
 	}
 
-void ShowMenu()
+
+int main()
+	{
+	ifstream in("Matvaretabellen2012.csv");
+
+	while(menuoption !=5)
 	{
 		if(menuoption == 0)
 		{
@@ -261,7 +264,7 @@ void ShowMenu()
 						{
 						case 1:
 							{
-								searchCategory();
+								searchCategory(in);
 								cont();
 							}
 						break;
@@ -269,7 +272,7 @@ void ShowMenu()
 							{
 								cout << "Type the ID number of the ingredient: " << endl;
 								cin >> searchID;
-								vector<string> idres = getIngredient(searchID);
+								vector<string> idres = getIngredient(in,searchID);
 								for(size_t i=0; i<idres.size(); ++i)
 								{
 									cout << idres[i] << " ";
@@ -283,7 +286,7 @@ void ShowMenu()
 						break;
 						}
 					}
-				break;
+			break;
 				case 2:
 					while(menuoption != 0)
 					{
@@ -292,7 +295,7 @@ void ShowMenu()
 					cin >> searchID;
 					cout << "Specify amount of grammes: " << endl;
 					cin >> grammes;
-					addToRecipe(parseIngredient(getIngredient(searchID),grammes));
+					addToRecipe(parseIngredient(getIngredient(in,searchID),grammes));
 					}
 			break;
 				case 3:
@@ -322,37 +325,5 @@ void ShowMenu()
 	
 		}
 	}
-
-int main()
-	{
-	//while ( getline(in,line) )    // get next line in file
-    //{
-    //    v.clear();
-    //    stringstream ss(line);
-
-    //    while (getline(ss,field,','))  // break line into comma delimitted fields
-    //    {
-    //        v.push_back(field);  // add each field to the 1D array
-    //    }
-    //    array.push_back(v);  // add the 1D array to the 2D array
-    //}
-
-	// print out what was read in
-    //for (size_t i=0; i<array.size(); ++i)
-    //{
-    //    for (size_t j=0; j<array[i].size(); ++j)
-    //    {
-    //        cout << array[i][j] << ","; // (separate fields by ,)
-    //    }
-    //    cout << "\n";
-    //}
-	
-	//searchCategory();
-	//parseIngredient(getIngredient());
-
-	while(menuoption !=5)
-		{
-		ShowMenu();
-		}
 	system("PAUSE");
 	}
